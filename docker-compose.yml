@@ -11,6 +11,17 @@ services:
       - 54320:5432
     networks:
       - epreschoolnet
+
+  rabbitMQ:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmqcontainer'
+    ports:
+      - 5672:5672
+    expose:
+      - 5672
+    networks:
+      - epreschoolnet
+
   api:
     restart: unless-stopped
     build:
