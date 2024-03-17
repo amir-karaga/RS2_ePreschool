@@ -1,0 +1,54 @@
+{
+  "sidebar": {
+    "home": "Kontrolna ploča",
+    "news": "Obavijesti",
+    "parents": "Roditelji",
+    "employees": "Uposlenici",
+    "children": "Djeca",
+    "registered_kindergartens": "Registrovani vrtići",
+    "countries": "Države",
+    "cities": "Gradovi",
+    "settings": "Postavke",
+    "payments": "Mjesečna plaćanja",
+    "change_language": "Promjena jezika",
+    "log_out": "Odjavi se"
+  },
+  "home": {
+    "title" : "Kontrolna ploča"
+  },
+  "news": {
+    "title": "Obavijesti",
+    "add": "Dodaj obavijest",
+    "name": "Naziv",
+    "text": "Tekst",
+    "author": "Autor",
+    "public": "Javna",
+    "edit": "Editovanje obavijesti",
+    "public_new": "Javna obavijest"
+  },
+  "languages": {
+    "bs": "Bosanski",
+    "en": "English"
+  },
+  "shared": {
+    "edit": "Uredi",
+    "delete": "Obriši",
+    "search": "Pretraga",
+    "choose_image": "Odaberite sliku",
+    "name": "Naziv",
+    "email": "Email",
+    "address": "Adresa",
+    "active": "Aktivnost",
+    "phone_number": "Broj telefona",
+    "location": "Lokacija",
+    "parents": "Roditelji",
+    "first_and_last_name": "Ime i prezime",
+    "kindergarten": "Vrtić",
+    "gender": "Spol",
+    "employees": "Uposlenici",
+    "acrions": "Akcije"
+  },
+  "kindergartens": {
+    "number": "Identifikacijski broj"
+  }
+}

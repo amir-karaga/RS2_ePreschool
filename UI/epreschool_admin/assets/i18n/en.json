@@ -1,0 +1,55 @@
+
+{
+  "sidebar": {
+    "home": "Dashboard",
+    "news": "News",
+    "parents": "Parents",
+    "employees": "Employees",
+    "children": "Children",
+    "registered_kindergartens": "Registered Kindergartens",
+    "countries": "Countries",
+    "cities": "Cities",
+    "payments": "Monthly payments",
+    "settings": "Settings",
+    "change_language": "Change Language",
+    "log_out": "Log Out"
+  },
+  "home": {
+    "title": "Dashboard"
+  },
+  "news": {
+    "title": "News",
+    "add": "Add News",
+    "name": "Name",
+    "text": "Text",
+    "author": "Author",
+    "public": "Public",
+    "edit": "Edit News",
+    "public_new": "Public News"
+  },
+  "languages": {
+    "bs": "Bosnian",
+    "en": "English"
+  },
+  "shared": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "choose_image": "Choose Image",
+    "name": "Name",
+    "email": "Email",
+    "address": "Address",
+    "active": "Active",
+    "phone_number": "Phone Number",
+    "location": "Location",
+    "parents": "Parents",
+    "first_and_last_name": "First and Last Name",
+    "kindergarten": "Kindergarten",
+    "gender": "Gender",
+    "employees": "Employees",
+    "actions": "Actions"
+  },
+  "kindergartens": {
+    "number": "Identification Number"
+  }
+}

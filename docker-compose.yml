@@ -1,0 +1,30 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=epreschool_docker_v1
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=epreschool123
+    ports:
+      - 54320:5432
+    networks:
+      - epreschoolnet
+  api:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ePreschool.Api\Dockerfile
+    environment:
+      - ConnectionStrings:"User ID=postgres;Password=epreschool123;Server=postgres;Port=5432;Database=epreschool_docker_v1;Integrated Security=true;Pooling=true";
+    ports:
+      - 8080:80
+    networks:
+      - epreschoolnet      
+    depends_on:
+      - postgres
+
+networks:
+  epreschoolnet:
+    driver: bridge
