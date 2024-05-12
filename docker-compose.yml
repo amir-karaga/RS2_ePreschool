@@ -15,6 +15,9 @@ services:
   rabbitMQ:
     image: rabbitmq:3-management
     container_name: 'rabbitmqcontainer'
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     ports:
       - 5672:5672
     expose:
@@ -22,13 +25,48 @@ services:
     networks:
       - epreschoolnet
 
+  rabbitmq-service:
+    build:
+      context: .
+      dockerfile: ePreschool.Subscriber\Dockerfile
+    environment:
+      - RABBITMQ_HOST=rabbitMQ
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - SMTP_SERVER=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USERNAME=appepreschool@gmail.com
+      - SMTP_PASSWORD=jziu ueir unun gbtu
+      - ENABLE_SSL=true
+      - MAIL_TIMEOUT=10000
+      - MAIL_FROM_ADDRESS=no-replay@ePreschool.ba
+      - MAIL_DISPLAY_NAME=ePreschool.ba
+    depends_on:
+      - rabbitMQ
+      - sql
+    networks:
+      - fitnetwork
+
   api:
     restart: unless-stopped
     build:
       context: .
       dockerfile: ePreschool.Api\Dockerfile
     environment:
-      - ConnectionStrings:"User ID=postgres;Password=epreschool123;Server=postgres;Port=5432;Database=epreschool_docker_v1;Integrated Security=true;Pooling=true";
+      - ConnectionStrings:"User ID=postgres;Password=epreschool123;Server=postgres;Port=5432;Database=epreschool_docker_v1;Integrated Security=true;Pooling=true"
+      - RABBITMQ_HOST=rabbitMQ
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - SMTP_SERVER=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USERNAME=appepreschool@gmail.com
+      - SMTP_PASSWORD=jziu ueir unun gbtu
+      - ENABLE_SSL=true
+      - MAIL_TIMEOUT=10000
+      - MAIL_FROM_ADDRESS=no-replay@ePreschool.ba
+      - MAIL_DISPLAY_NAME=ePreschool.ba
     ports:
       - 8080:80
     networks:

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using EasyNetQ;
 using ePreschool.Core.Entities;
 using ePreschool.Core.Entities.Identity;
 using ePreschool.Core.Enumerations;
@@ -25,10 +24,11 @@ namespace ePreschool.Services
         private readonly IEmail _email;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
-
+        private readonly IRabbitMQProducer _rabbitMQProducer;
         public ParentsService(IUnitOfWork unitOfWork, IApplicationUserRolesRepository applicationUserRolesRepository,
             IApplicationRolesRepository applicationRolesRepository, ICrypto crypto,
-            IPasswordHasher<ApplicationUser> passwordHasher, IEmail email, IMapper mapper, IValidator<ParentUpsertModel> validator) : base(mapper, unitOfWork, validator)
+            IPasswordHasher<ApplicationUser> passwordHasher, IEmail email, IMapper mapper, IRabbitMQProducer rabbitMQProducer,
+            IValidator<ParentUpsertModel> validator) : base(mapper, unitOfWork, validator)
         {
             _unitOfWork = (UnitOfWork)unitOfWork;
             _applicationUserRolesRepository = applicationUserRolesRepository;
@@ -37,6 +37,7 @@ namespace ePreschool.Services
             _email = email;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         public override async Task<ParentModel> AddAsync(ParentUpsertModel entityModel, CancellationToken cancellationToken = default)
@@ -68,13 +69,12 @@ namespace ePreschool.Services
 
                     var email = new EmailModel
                     {
-                        Title = "Login kredencijali",
+                        Title = EmailMessages.ClientEmailSubject,
                         Body = message,
                         Email = newUser.Email,
                     };
 
-                    using var bus = RabbitHutch.CreateBus("host=localhost");
-                    bus.PubSub.Publish(email);
+                    _rabbitMQProducer.SendMessage(email);
                 }
                 catch (Exception ex)
                 {

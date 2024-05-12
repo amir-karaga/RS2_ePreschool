@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ePreschool.Subscriber": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

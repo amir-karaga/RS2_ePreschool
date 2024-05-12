@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 using System.Text;
 
@@ -14,19 +13,18 @@ namespace ePreschool.Shared.Services.Email
         private readonly string _password;
         private readonly string _displayName;
         private readonly string _fromAddress;
-        // ReSharper disable once InconsistentNaming
         private readonly bool _enableSSL;
 
-        public Email(IConfiguration configuration)
+        public Email()
         {
-            _host = configuration["SMTP:Host"];
-            _port = int.Parse(configuration["SMTP:Port"]);
-            _timeout = int.Parse(configuration["SMTP:Timeout"]);
-            _username = configuration["SMTP:Username"];
-            _password = configuration["SMTP:Password"];
-            _enableSSL = bool.Parse(configuration["SMTP:EnableSSL"]);
-            _displayName = configuration["SMTP:MailMessage:DisplayName"];
-            _fromAddress = configuration["SMTP:MailMessage:FromAddress"];
+            _host = Environment.GetEnvironmentVariable("SMTP_SERVER") ?? "smtp.gmail.com";
+            _port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587");
+            _timeout = int.Parse(Environment.GetEnvironmentVariable("MAIL_TIMEOUT") ?? "10000");
+            _enableSSL = bool.Parse(Environment.GetEnvironmentVariable("ENABLE_SSL") ?? "true");
+            _username = Environment.GetEnvironmentVariable("SMTP_USERNAME") ?? "mellimostar@gmail.com";
+            _password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "ttydocdytcokyeru";
+            _displayName = Environment.GetEnvironmentVariable("MAIL_DISPLAY_NAME") ?? "ePreschool.ba";
+            _fromAddress = Environment.GetEnvironmentVariable("MAIL_FROM_ADDRESS") ?? "no-replay@ePreschool.ba";
         }
 
         public async Task Send(string subject, string body, string toAddress, Attachment attachment = null)
@@ -38,8 +36,8 @@ namespace ePreschool.Shared.Services.Email
         {
             using (var smtpClient = new SmtpClient
             {
-                Port = 587,
-                Host = "smtp.gmail.com",
+                Port = _port,
+                Host = _host,
                 Timeout = _timeout,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
@@ -68,7 +66,7 @@ namespace ePreschool.Shared.Services.Email
                         await smtpClient.SendMailAsync(mailMessage);
 
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         throw;
                     }

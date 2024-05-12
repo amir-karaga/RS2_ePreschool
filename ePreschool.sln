@@ -22,7 +22,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ePreschool.Shared", "ePresc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ePreschool.Services", "ePreschool.Services\ePreschool.Services.csproj", "{6D7A9BCD-C7B9-4FF3-8707-0C6AE2360441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePreschool.Subscriber", "ePreschool.Subscriber\ePreschool.Subscriber.csproj", "{AD2527FA-4B8D-4859-91AF-C246795884F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ePreschool.Subscriber", "ePreschool.Subscriber\ePreschool.Subscriber.csproj", "{AD2527FA-4B8D-4859-91AF-C246795884F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9AF0E58A-A746-4690-BF83-A9159E102151}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
