@@ -34,41 +34,34 @@ namespace ePreschool.Services
         }
         public override async Task<EmployeeModel> AddAsync(EmployeeUpsertModel entityModel, CancellationToken cancellationToken = default)
         {
-            try
+            entityModel.DateOfEmployment = DateTime.Now;
+            dynamic newUser = _mapper.Map<PersonInsertModel>(entityModel);
+            newUser.ApplicationUser.Active = true;
+            newUser.ApplicationUser.EmailConfirmed = true;
+            newUser.ApplicationUser.IsEmployee = true;
+            newUser.ApplicationUser.ConcurrencyStamp = Guid.NewGuid().ToString();
+            var password = _crypto.GeneratePassword();
+            newUser.ApplicationUser.PasswordHash = _passwordHasher.HashPassword(new ApplicationUser(), password);
+            newUser.ApplicationUser.IsDeleted = false;
+            newUser = _mapper.Map<Person>(newUser);
+            await _unitOfWork.PersonsRepository.AddAsync(newUser);
+            await _unitOfWork.SaveChangesAsync();
+            var role = await _unitOfWork.ApplicationRolesRepository.GetByRoleLevelOrName((int)Role.Employee, Role.Employee.ToString());
+            if (entityModel.Position == Position.Direktor)
             {
-                entityModel.DateOfEmployment = DateTime.Now;
-                dynamic newUser = _mapper.Map<PersonInsertModel>(entityModel);
-                newUser.ApplicationUser.Active = true;
-                newUser.ApplicationUser.EmailConfirmed = true;
-                newUser.ApplicationUser.IsEmployee = true;
-                newUser.ApplicationUser.ConcurrencyStamp = Guid.NewGuid().ToString();
-                var password = _crypto.GeneratePassword();
-                newUser.ApplicationUser.PasswordHash = _passwordHasher.HashPassword(new ApplicationUser(), password);
-                newUser.ApplicationUser.IsDeleted = false;
-                newUser = _mapper.Map<Person>(newUser);
-                await _unitOfWork.PersonsRepository.AddAsync(newUser);
-                await _unitOfWork.SaveChangesAsync();
-                var role = await _unitOfWork.ApplicationRolesRepository.GetByRoleLevelOrName((int)Role.Employee, Role.Employee.ToString());
-                if (entityModel.Position == Position.Direktor)
-                {
-                    role = await _unitOfWork.ApplicationRolesRepository.GetByRoleLevelOrName((int)Role.PreschoolOwner, Role.PreschoolOwner.ToString());
-                }
-                await _unitOfWork.ApplicationUserRolesRepository.AddAsync(new ApplicationUserRole
-                {
-                    UserId = newUser.Id,
-                    RoleId = role.Id
-                });
-                await _unitOfWork.SaveChangesAsync();
-
-                var message = EmailMessages.GeneratePasswordEmail($"{newUser.FirstName} {newUser.LastName}", password);
-                await _email.Send("Login kredencijali", message, newUser.ApplicationUser.Email);
-                return _mapper.Map<EmployeeModel>(newUser.Employee);
+                role = await _unitOfWork.ApplicationRolesRepository.GetByRoleLevelOrName((int)Role.PreschoolOwner, Role.PreschoolOwner.ToString());
             }
-            catch (Exception ex)
+            await _unitOfWork.ApplicationUserRolesRepository.AddAsync(new ApplicationUserRole
             {
+                UserId = newUser.Id,
+                RoleId = role.Id
+            });
+            await _unitOfWork.SaveChangesAsync();
 
-                throw;
-            }
+            var message = EmailMessages.GeneratePasswordEmail($"{newUser.FirstName} {newUser.LastName}", password);
+            await _email.Send("Login kredencijali", message, newUser.ApplicationUser.Email);
+            newUser.Employee.Person = null;
+            return _mapper.Map<EmployeeModel>(newUser.Employee);
         }
         public override async Task<EmployeeModel> UpdateAsync(EmployeeUpsertModel entityModel, CancellationToken cancellationToken = default)
         {
