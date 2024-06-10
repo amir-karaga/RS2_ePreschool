@@ -71,6 +71,7 @@ builder.Services.AddSingleton<ICrypto, Crypto>();
 builder.Services.AddSingleton<IEmail, Email>();
 builder.Services.AddScoped<IFileManager, FileManager>();
 builder.Services.AddScoped<IEnumManager, EnumManager>();
+builder.Services.AddScoped<IRabbitMQProducer, RabbitMQProducer>();
 
 #endregion
 

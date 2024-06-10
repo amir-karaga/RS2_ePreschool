@@ -395,8 +395,7 @@ namespace ePreschool.Infrastructure
                     LocationId = 2,
                     Name = "Preschool1",
                     PhoneNumber = "38762111222"
-                }
-                );
+                });
         }
 
         private void SeedAppConfig(ModelBuilder modelBuilder)
@@ -408,8 +407,7 @@ namespace ePreschool.Infrastructure
                      MonthlyFee = 300,
                      CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                      IsDeleted = false,
-                 }
-                 );
+                 });
         }
 
     }
