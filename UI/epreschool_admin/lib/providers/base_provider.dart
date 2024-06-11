@@ -11,10 +11,8 @@ abstract class BaseProvider<T> with ChangeNotifier {
   String endpoint;
   String apiUrl = "";
 
-  BaseProvider(this.endpoint)
-  {
+  BaseProvider(this.endpoint) {
     apiUrl = dotenv.env['API_URL']!;
-
   }
 
   Future<List<T>> get(Map<String, String>? params) async {
@@ -90,16 +88,10 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
   Future<bool> insertFormData(Map<String, dynamic> formData) async {
     final Uri uri = Uri.parse('$apiUrl/$endpoint');
-
-    print(uri);
-    print(formData);
-
     try {
-      var request = await http.MultipartRequest(
-        'POST',
-        uri);
+      var request = await http.MultipartRequest('POST', uri);
 
-      request.headers.addAll(Authorization.createHeaders(formData:true));
+      request.headers.addAll(Authorization.createHeaders(formData: true));
 
       formData.forEach((key, value) {
         request.fields[key] = value.toString();
@@ -129,7 +121,8 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var uri = Uri.parse(url);
 
     Map<String, String> headers = Authorization.createHeaders();
-    var response = await http.put(uri, headers: headers, body: jsonEncode(request));
+    var response =
+        await http.put(uri, headers: headers, body: jsonEncode(request));
 
     if (isValidResponseCode(response)) {
       return true;
@@ -142,11 +135,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
     final Uri uri = Uri.parse('$apiUrl/$endpoint');
 
     try {
-      var request = await http.MultipartRequest(
-          'PUT',
-          uri);
-      request.headers.addAll(Authorization.createHeaders(formData:true));
-      
+      var request = await http.MultipartRequest('PUT', uri);
+      request.headers.addAll(Authorization.createHeaders(formData: true));
+
       formData.forEach((key, value) {
         request.fields[key] = value.toString();
       });
@@ -175,7 +166,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var headers = Authorization.createHeaders();
 
     final response = await http.delete(uri, headers: headers);
-
   }
 
   bool isValidResponseCode(Response response) {

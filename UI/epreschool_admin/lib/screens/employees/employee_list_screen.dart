@@ -62,111 +62,113 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
     var pages = List.generate(numberOfPages, (index) => Center());
     return MasterScreenWidget(
       child: Scaffold(
-        body: isLoading ?
-        Center(
-          child: CircularProgressIndicator(),
-        ): Container(
-          margin: EdgeInsets.all(20),
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              _buildChildSearch(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EmployeeAddScreen(),
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                margin: EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeader(),
+                    _buildEmployeeSearch(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EmployeeAddScreen(),
+                              ),
+                            );
+                          },
+                          icon: Icon(Icons.add),
+                          label: Text('Dodaj uposlenika'),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.greenAccent),
+                          ),
                         ),
-                      );
-                    },
-                    icon: Icon(Icons.add),
-                    label: Text('Dodaj uposlenika'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.greenAccent),
+                        SizedBox(width: 10),
+                      ],
                     ),
-                  ),
-                  SizedBox(width: 10),
-                ],
-              ),
-              SizedBox(height:10),
-              Flexible(
-                child: LayoutBuilder(builder: (context, constraints) {
-                  double screenWidth = constraints.maxWidth;
-                  int crossAxisCount;
-                  if (screenWidth < 648) {
-                    crossAxisCount = 1;
-                  } else if (screenWidth >= 648 && screenWidth <= 1199) {
-                    crossAxisCount = 2;
-                  } else {
-                    crossAxisCount = 3;
-                  }
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 10.0,
-                        childAspectRatio: 2.5,
-                        mainAxisExtent: 200.0,
-                      ),
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                          height: 200,
-                          child: _buildCard(data[index]),
+                    SizedBox(height: 10),
+                    Flexible(
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        double screenWidth = constraints.maxWidth;
+                        int crossAxisCount;
+                        if (screenWidth < 648) {
+                          crossAxisCount = 1;
+                        } else if (screenWidth >= 648 && screenWidth <= 1199) {
+                          crossAxisCount = 2;
+                        } else {
+                          crossAxisCount = 3;
+                        }
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: crossAxisCount,
+                              crossAxisSpacing: 10.0,
+                              mainAxisSpacing: 10.0,
+                              childAspectRatio: 2.5,
+                              mainAxisExtent: 200.0,
+                            ),
+                            itemCount: data.length,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                height: 200,
+                                child: _buildCard(data[index]),
+                              );
+                            },
+                          ),
                         );
-                      },
+                      }),
                     ),
-                  );
-                }),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: pages[currentPage - 1],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    width: 300.0,
-                    child: NumberPaginator(
-                      numberPages: numberOfPages,
-                      onPageChange: (index) {
-                        setState(() {
-                          currentPage = index + 1;
-                          loadData("", currentPage, pageSize);
-                        });
-                      },
-                      config: NumberPaginatorUIConfig(
-                        height: 36,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        child: pages[currentPage - 1],
                       ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          width: 300.0,
+                          child: NumberPaginator(
+                            numberPages: numberOfPages,
+                            onPageChange: (index) {
+                              setState(() {
+                                currentPage = index + 1;
+                                loadData("", currentPage, pageSize);
+                              });
+                            },
+                            config: NumberPaginatorUIConfig(
+                              height: 36,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
-
 
   Widget _buildCard(Employee data) {
     return Padding(
@@ -223,21 +225,21 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 20),
-                                    Text(
-                                      "${data.person!.firstName} ${data.person!.lastName}",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    // Checkbox(
-                                    //   activeColor: custom_green,
-                                    //   value: true,
-                                    //   onChanged: (value) {
-                                    //     // setState(() {});
-                                    //   },
-                                    // )
+                                Text(
+                                  "${data.person!.firstName} ${data.person!.lastName}",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                // Checkbox(
+                                //   activeColor: custom_green,
+                                //   value: true,
+                                //   onChanged: (value) {
+                                //     // setState(() {});
+                                //   },
+                                // )
                                 SizedBox(height: 5),
                                 Text(
                                   "Date of birth: ${data.person!.birthDate}",
@@ -301,7 +303,7 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
     );
   }
 
-  Widget _buildChildSearch() {
+  Widget _buildEmployeeSearch() {
     return Row(
       children: [
         SizedBox(
@@ -312,8 +314,7 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
               controller: _searchController,
               onChanged: (value) async {
                 searchFilter = value.toString();
-                var tmpData =
-                    await loadData(searchFilter, 1, 5);
+                var tmpData = await loadData(searchFilter, 1, 5);
                 setState(() {
                   data = tmpData!;
                 });

@@ -71,7 +71,7 @@ namespace ePreschool.Services
                     {
                         Title = EmailMessages.ClientEmailSubject,
                         Body = message,
-                        Email = newUser.Email,
+                        Email = entityModel.Email,
                     };
 
                     _rabbitMQProducer.SendMessage(email);

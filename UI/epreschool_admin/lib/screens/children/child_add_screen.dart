@@ -642,7 +642,8 @@ class _ChildAddScreenState extends State<ChildAddScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Molimo unesite kontakt za hitne slučajeve';
                             }
-                            RegExp phoneNumberLengthRegExp = RegExp(r'^\d{9,15}$');
+                            RegExp phoneNumberLengthRegExp =
+                                RegExp(r'^\d{9,15}$');
                             if (!phoneNumberLengthRegExp.hasMatch(value)) {
                               return 'Broj telefona mora imati između 9 i 15 znakova';
                             }
@@ -659,18 +660,18 @@ class _ChildAddScreenState extends State<ChildAddScreen> {
                           child: TextFormField(
                         controller: noteController,
                         maxLines: 5,
-                            decoration: InputDecoration(
-                              labelText: 'Napomena',
-                              border: OutlineInputBorder(),
-                              hintText: 'Unesite napomenu',
-                              hintStyle: TextStyle(color: Colors.grey),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Molimo unesite napomenu';
-                              }
-                              return null;
-                            },
+                        decoration: InputDecoration(
+                          labelText: 'Napomena',
+                          border: OutlineInputBorder(),
+                          hintText: 'Unesite napomenu',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Molimo unesite napomenu';
+                          }
+                          return null;
+                        },
                       ))
                     ],
                   ),
@@ -713,24 +714,24 @@ class _ChildAddScreenState extends State<ChildAddScreen> {
                                   filename: 'image.jpg',
                                 );
                               }
-                              bool? result = await _childrenProvider?.insertFormData(formData);
-                              if(result!= null && result)
-                                {
-                              Fluttertoast.showToast(
-                                msg: "Dijete uspješno dodano",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 5,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0,
-                              );
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ChildListScreen(),
-                                ),
-                              );}
-                              else{
+                              bool? result = await _childrenProvider
+                                  ?.insertFormData(formData);
+                              if (result != null && result) {
+                                Fluttertoast.showToast(
+                                  msg: "Dijete uspješno dodano",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 5,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ChildListScreen(),
+                                  ),
+                                );
+                              } else {
                                 Fluttertoast.showToast(
                                   msg: "Greška prilikom dodavanja",
                                   toastLength: Toast.LENGTH_SHORT,

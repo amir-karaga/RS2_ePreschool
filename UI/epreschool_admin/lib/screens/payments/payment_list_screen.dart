@@ -99,19 +99,17 @@ class _PaymentListScreenState extends State<PaymentListScreen> {
                       ],
                     ),
                     Padding(
-                        padding: const EdgeInsets.all(8.0),
-                          child: selectedCompany == null
-                              ? Container(
-                                  child: Text(
-                                      "Potrebno je odabrati vrtić kako bi se prikazale mjesečne uplate"))
-                              : _buildList(context),
-                        ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: selectedCompany == null
+                          ? Container(
+                              child: Text(
+                                  "Potrebno je odabrati vrtić kako bi se prikazale mjesečne uplate"))
+                          : _buildList(context),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Expanded(
-                        child: Container(
-                          child: pages[currentPage - 1],
-                        ),
+                      child: Container(
+                        child: pages[currentPage - 1],
                       ),
                     ),
                     Padding(

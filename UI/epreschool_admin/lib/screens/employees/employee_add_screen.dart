@@ -890,6 +890,7 @@ class _EmployeeAddScreenState extends State<EmployeeAddScreen> {
                             }
                             bool? result = await _employeesProvider
                                 ?.insertFormData(formData);
+                            print(result);
                             if (result != null && result) {
                               Fluttertoast.showToast(
                                 msg: "Uposlenik uspješno dodan",

@@ -60,56 +60,57 @@ class _ParentListScreenState extends State<ParentListScreen> {
     pages = List.generate(numberOfPages, (index) => Center());
     return MasterScreenWidget(
         child: Scaffold(
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              margin: EdgeInsets.all(20),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  _buildSearch(),
-                  Expanded(
-                    child: _buildList(context),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Expanded(
-                      child: Container(
-                        child: pages[currentPage - 1],
+            body: Visibility(
+                visible: isLoading,
+                child: Center(child: CircularProgressIndicator()),
+                replacement: RefreshIndicator(
+                  onRefresh: () {
+                    return loadData('', 1, 5);
+                  },
+                  child: Container(
+                      margin: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Container(
-                            width: 300.0,
-                            child: NumberPaginator(
-                              key: paginatorKey,
-                              numberPages: numberOfPages,
-                              onPageChange: (index) {
-                                setState(() {
-                                  currentPage = index + 1;
-                                  loadData("", currentPage, pageSize);
-                                });
-                              },
-                              config: NumberPaginatorUIConfig(
-                                height: 36,
-                              ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildHeader(),
+                          _buildSearch(),
+                          Expanded(
+                            child: _buildList(context),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: pages[currentPage - 1],
                             ),
-                          ))),
-                ],
-              )),
-    ));
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Container(
+                                    width: 300.0,
+                                    child: NumberPaginator(
+                                      key: paginatorKey,
+                                      numberPages: numberOfPages,
+                                      onPageChange: (index) {
+                                        setState(() {
+                                          currentPage = index + 1;
+                                          loadData("", currentPage, pageSize);
+                                        });
+                                      },
+                                      config: NumberPaginatorUIConfig(
+                                        height: 36,
+                                      ),
+                                    ),
+                                  ))),
+                        ],
+                      )),
+                ))));
   }
 
   DataRow recentDataRow(Parent parent, BuildContext context) {
