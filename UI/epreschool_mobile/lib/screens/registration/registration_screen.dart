@@ -490,7 +490,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 fontSize: 16.0,
                               );
                               Navigator.popAndPushNamed(
-                                  context, ChildListScreen.routeName);
+                                  context, LoginScreen.routeName);
                             } else {
                               Fluttertoast.showToast(
                                 msg: "Greska prilikom registracije",

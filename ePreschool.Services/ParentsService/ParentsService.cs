@@ -42,53 +42,38 @@ namespace ePreschool.Services
 
         public override async Task<ParentModel> AddAsync(ParentUpsertModel entityModel, CancellationToken cancellationToken = default)
         {
-            try
+            dynamic newUser = _mapper.Map<PersonInsertModel>(entityModel);
+            newUser.ApplicationUser.Active = true;
+            newUser.ApplicationUser.EmailConfirmed = true;
+            newUser.ApplicationUser.IsParent = true;
+            newUser.ApplicationUser.ConcurrencyStamp = Guid.NewGuid().ToString();
+            string password = _crypto.GeneratePassword();
+            newUser.ApplicationUser.PasswordHash = _passwordHasher.HashPassword(new ApplicationUser(), password);
+            newUser = _mapper.Map<Person>(newUser);
+            await _unitOfWork.PersonsRepository.AddAsync(newUser);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            var role = await _applicationRolesRepository.GetByRoleLevelOrName((int)Role.Parent, Role.Parent.ToString());
+            await _applicationUserRolesRepository.AddAsync(new ApplicationUserRole
             {
-                dynamic newUser = _mapper.Map<PersonInsertModel>(entityModel);
-                newUser.ApplicationUser.Active = true;
-                newUser.ApplicationUser.EmailConfirmed = true;
-                newUser.ApplicationUser.IsParent = true;
-                newUser.ApplicationUser.ConcurrencyStamp = Guid.NewGuid().ToString();
-                string password = _crypto.GeneratePassword();
-                newUser.ApplicationUser.PasswordHash = _passwordHasher.HashPassword(new ApplicationUser(), password);
-                newUser = _mapper.Map<Person>(newUser);
-                await _unitOfWork.PersonsRepository.AddAsync(newUser);
+                UserId = newUser.Id,
+                RoleId = role.Id
+            });
+            await _unitOfWork.SaveChangesAsync();
 
-                await _unitOfWork.SaveChangesAsync();
+            var message = EmailMessages.GeneratePasswordEmail($"{newUser.FirstName} {newUser.LastName}", password);
 
-                var role = await _applicationRolesRepository.GetByRoleLevelOrName((int)Role.Parent, Role.Parent.ToString());
-                await _applicationUserRolesRepository.AddAsync(new ApplicationUserRole
-                {
-                    UserId = newUser.Id,
-                    RoleId = role.Id
-                });
-                await _unitOfWork.SaveChangesAsync();
-                try
-                {
-                    var message = EmailMessages.GeneratePasswordEmail($"{newUser.FirstName} {newUser.LastName}", password);
-
-                    var email = new EmailModel
-                    {
-                        Title = EmailMessages.ClientEmailSubject,
-                        Body = message,
-                        Email = entityModel.Email,
-                    };
-
-                    _rabbitMQProducer.SendMessage(email);
-                }
-                catch (Exception ex)
-                {
-                    throw;
-                }
-
-                return _mapper.Map<ParentModel>(newUser.Parent);
-            }
-            catch (Exception ex)
+            var email = new EmailModel
             {
+                Title = EmailMessages.ClientEmailSubject,
+                Body = message,
+                Email = entityModel.Email,
+            };
 
-                throw;
-            }
-
+            _rabbitMQProducer.SendMessage(email);
+            newUser.Parent.Person = null;
+            return _mapper.Map<ParentModel>(newUser.Parent);
         }
     }
 }
