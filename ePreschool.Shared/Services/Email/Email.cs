@@ -21,8 +21,8 @@ namespace ePreschool.Shared.Services.Email
             _port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587");
             _timeout = int.Parse(Environment.GetEnvironmentVariable("MAIL_TIMEOUT") ?? "10000");
             _enableSSL = bool.Parse(Environment.GetEnvironmentVariable("ENABLE_SSL") ?? "true");
-            _username = Environment.GetEnvironmentVariable("SMTP_USERNAME") ?? "mellimostar@gmail.com";
-            _password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "ttydocdytcokyeru";
+            _username = Environment.GetEnvironmentVariable("SMTP_USERNAME") ?? "appepreschool@gmail.com";
+            _password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "jziu ueir unun gbtu";
             _displayName = Environment.GetEnvironmentVariable("MAIL_DISPLAY_NAME") ?? "ePreschool.ba";
             _fromAddress = Environment.GetEnvironmentVariable("MAIL_FROM_ADDRESS") ?? "no-replay@ePreschool.ba";
         }

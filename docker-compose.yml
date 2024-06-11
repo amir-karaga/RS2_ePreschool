@@ -44,9 +44,9 @@ services:
       - MAIL_DISPLAY_NAME=ePreschool.ba
     depends_on:
       - rabbitMQ
-      - sql
+      - postgres
     networks:
-      - fitnetwork
+      - epreschoolnet
 
   api:
     restart: unless-stopped
@@ -62,7 +62,7 @@ services:
       - SMTP_SERVER=smtp.gmail.com
       - SMTP_PORT=587
       - SMTP_USERNAME=appepreschool@gmail.com
-      - SMTP_PASSWORD=jziu ueir unun gbtu
+      - SMTP_PASSWORD="jziu ueir unun gbtu"
       - ENABLE_SSL=true
       - MAIL_TIMEOUT=10000
       - MAIL_FROM_ADDRESS=no-replay@ePreschool.ba
