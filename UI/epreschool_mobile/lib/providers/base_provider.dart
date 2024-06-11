@@ -11,7 +11,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
   String apiUrl = "";
 
   BaseProvider(this.endpoint){
-    apiUrl = dotenv.env['API_URL']!;
+    apiUrl = String.fromEnvironment('API_URL', defaultValue: dotenv.env['API_URL']!);
   }
 
   Future<List<T>> get(Map<String, String>? params) async {
