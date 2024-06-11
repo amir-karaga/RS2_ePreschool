@@ -394,6 +394,7 @@ class _CompanyListScreenState extends State<CompanyListScreen> {
                                             TextStyle(color: Colors.grey),
                                         prefixIcon: Icon(Icons.numbers),
                                       ),
+                                      keyboardType: TextInputType.number,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Molimo unesite identifikacijski broj';
@@ -433,9 +434,16 @@ class _CompanyListScreenState extends State<CompanyListScreen> {
                                       hintStyle: TextStyle(color: Colors.grey),
                                       prefixIcon: Icon(Icons.phone),
                                     ),
+                                    keyboardType: TextInputType.number,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Molimo unesite broj telefona';
+                                      }
+                                      RegExp phoneNumberLengthRegExp =
+                                          RegExp(r'^\d{9,15}$');
+                                      if (!phoneNumberLengthRegExp
+                                          .hasMatch(value)) {
+                                        return 'Broj telefona mora imati između 9 i 15 znakova';
                                       }
                                       return null;
                                     },
@@ -534,7 +542,8 @@ class _CompanyListScreenState extends State<CompanyListScreen> {
                       company.locationId = selectedLocation!.id;
                       bool? result = false;
                       if (isEdit) {
-                        result = await _companyProvider?.update(company.id, company);
+                        result =
+                            await _companyProvider?.update(company.id, company);
                       } else {
                         result = await _companyProvider?.insert(company);
                       }
