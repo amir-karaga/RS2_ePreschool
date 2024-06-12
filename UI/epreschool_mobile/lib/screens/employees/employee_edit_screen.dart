@@ -740,7 +740,7 @@ class _EmployeeEditScreenState extends State<EmployeeEditScreen> {
                               'drivingLicence': selectedDrivingLicence?.id,
                               'marriageStatus': selectedMarriageStatus?.id,
                               'biography': biographyController.text,
-                              'pay': addressController.text,
+                              'pay': payController.text,
                               'companyId':
                                   LoginProvider.authResponse!.currentCompanyId,
                               'postion': 0,

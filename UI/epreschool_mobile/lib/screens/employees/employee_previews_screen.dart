@@ -158,7 +158,7 @@ class _EmployeePreviewScreenState extends State<EmployeePreviewScreen> {
                         ],
                       ),
                     SizedBox(height: 16),
-                    Row(children: [
+                    LoginProvider.authResponse!.isParent!? Row(children: [
                       !isReviewEmployee? TextButton.icon(
                         onPressed: () {
                           Navigator.push(
@@ -175,7 +175,7 @@ class _EmployeePreviewScreenState extends State<EmployeePreviewScreen> {
                           style: TextStyle(color: Colors.blue),
                         ),
                       ):Text("Ostavili ste već recenziju za odgajatelja"),
-                    ]),
+                    ]):Row(),
                     SizedBox(height: 10),
                     Row(children: [
                       TextButton.icon(

@@ -48,8 +48,8 @@ class _ParentPreviewScreenState extends State<ParentPreviewScreen> {
     _parentsProvider = context.read<ParentsProvider>();
     _enumProvider = context.read<EnumProvider>();
     Future.delayed(Duration.zero, () async {
-      await loadGenders();
       await loadCities();
+      await loadGenders();
       await loadData();
     });
   }
@@ -66,7 +66,7 @@ class _ParentPreviewScreenState extends State<ParentPreviewScreen> {
         selectedGender =
             genders.firstWhere((item) => item.id == data.person!.gender!);
         selectedCity =
-            cities.firstWhere((item) => item.id == data.person!.birthPlaceId!);
+            cities.firstWhere((item) => item.id == data.person?.birthPlaceId);
         postalCodeController.text = data.person!.postCode!;
       }
     });
